@@ -1,0 +1,12 @@
+node_modules
+.next
+.env*
+*.log
+.DS_Store
+
+# Ignore all wav files in the project
+*.wav
+
+# Ignore the directories containing wav files specifically
+data/dictation_wav/
+public/audio/dictation_wav/

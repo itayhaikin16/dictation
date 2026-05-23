@@ -11,13 +11,14 @@ interface GameEngineProps {
   mode: 'practice' | 'timed' | 'survival';
   onGameOver: (finalScore: number) => void;
   onQuit: () => void;
+  wordCount: number;
 }
 
-export function GameEngine({ initialWords, mode, onGameOver, onQuit }: GameEngineProps) {
+export function GameEngine({ initialWords, mode, onGameOver, onQuit, wordCount }: GameEngineProps) {
   const [words] = useState(() => {
-    // Shuffle and take a random sample of 50 words
+    // Shuffle and take a random sample of specified wordCount
     const shuffled = [...initialWords].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 50);
+    return shuffled.slice(0, wordCount);
   });
   const [state, setState] = useState<GameState>({
     currentWordIndex: 0,
@@ -75,7 +76,7 @@ export function GameEngine({ initialWords, mode, onGameOver, onQuit }: GameEngin
       setFeedback('correct');
       setState(prev => ({
         ...prev,
-        score: prev.score + (10 * (prev.streak + 1)),
+        score: prev.score + 1,
         streak: prev.streak + 1,
       }));
     } else {
@@ -99,12 +100,7 @@ export function GameEngine({ initialWords, mode, onGameOver, onQuit }: GameEngin
     setState(prev => {
       const nextIndex = prev.currentWordIndex + 1;
       if (nextIndex >= words.length) {
-        // Shuffle or loop for practice mode
-        if (mode === 'practice') {
-          return { ...prev, currentWordIndex: 0 };
-        } else {
-          return { ...prev, gameState: 'gameOver' };
-        }
+        return { ...prev, gameState: 'gameOver' };
       }
       
       // Survival mode game over check

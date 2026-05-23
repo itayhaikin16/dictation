@@ -20,8 +20,10 @@ export function WordInput({ value, onChange, onConfirm, disabled, placeholder = 
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    if (!disabled) {
+      inputRef.current?.focus();
+    }
+  }, [disabled]);
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-md mx-auto">
@@ -32,7 +34,10 @@ export function WordInput({ value, onChange, onConfirm, disabled, placeholder = 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') onConfirm();
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            onConfirm();
+          }
         }}
         disabled={disabled}
         placeholder={placeholder}
@@ -60,12 +65,20 @@ interface FeedbackOverlayProps {
 }
 
 export function FeedbackOverlay({ status, correctWord, onClose }: FeedbackOverlayProps) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (status) {
+      btnRef.current?.focus();
+    }
+  }, [status]);
+
   if (!status) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
       <div className={cn(
-        "bg-white p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full mx-4 animate-in zoom-in-95 duration-300",
+        "bg-white p-8 rounded-3xl shadow-2xl text-center max-w-sm w-full mx-4",
         status === 'correct' ? "border-t-8 border-green-500" : "border-t-8 border-red-500"
       )}>
         <div className="text-6xl mb-4">
@@ -86,8 +99,9 @@ export function FeedbackOverlay({ status, correctWord, onClose }: FeedbackOverla
         )}
 
         <button
+          ref={btnRef}
           onClick={onClose}
-          className="mt-6 w-full py-3 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-700 transition-colors"
+          className="mt-6 w-full py-3 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-700 transition-colors focus:ring-4 ring-blue-300 outline-none"
         >
           המשך לשאלה הבאה
         </button>

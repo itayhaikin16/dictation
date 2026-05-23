@@ -8,6 +8,7 @@ import seedWords from '@/data/seed_words.json';
 export default function Home() {
   const [gameMode, setGameMode] = useState<'menu' | 'practice' | 'timed' | 'survival' | 'leaderboard'>('menu');
   const [score, setScore] = useState(0);
+  const [wordCount, setWordCount] = useState(50);
 
   const handleGameOver = (finalScore: number) => {
     setScore(finalScore);
@@ -28,35 +29,62 @@ export default function Home() {
         </header>
 
         {gameMode === 'menu' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto animate-in fade-in zoom-in duration-300">
-            <MenuButton 
-              title="תרגול חופשי" 
-              description="התאמן בלי לחץ ובלי הגבלה" 
-              icon="✍️" 
-              color="bg-green-500" 
-              onClick={() => setGameMode('practice')} 
-            />
-            <MenuButton 
-              title="אתגר זמן" 
-              description="כמה מילים תצליח לכתוב בדקה?" 
-              icon="⏱️" 
-              color="bg-blue-500" 
-              onClick={() => setGameMode('timed')} 
-            />
-            <MenuButton 
-              title="מצב הישרדות" 
-              description="שמור על החיים שלך וכתוב נכון!" 
-              icon="❤️" 
-              color="bg-red-500" 
-              onClick={() => setGameMode('survival')} 
-            />
-            <MenuButton 
-              title="לוח תוצאות" 
-              description="מי הכי טוב במחלקה?" 
-              icon="🏆" 
-              color="bg-yellow-500" 
-              onClick={() => setGameMode('leaderboard')} 
-            />
+          <div className="flex flex-col items-center gap-8 animate-in fade-in zoom-in duration-300">
+            {/* Configuration Panel */}
+            <div className="w-full max-w-2xl p-6 bg-white rounded-3xl shadow-md border border-gray-100 flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-grow w-full">
+                <div className="flex justify-between items-center mb-4">
+                  <label className="text-lg font-bold text-gray-700">מספר מילים לסיבוב:</label>
+                  <span className="text-2xl font-black text-blue-600 bg-blue-100 px-3 py-1 rounded-lg">
+                    {wordCount}
+                  </span>
+                </div>
+                <input 
+                  type="range" 
+                  min="5" 
+                  max="250" 
+                  value={wordCount} 
+                  onChange={(e) => setWordCount(parseInt(e.target.value))} 
+                  className="w-full h-3 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-2 font-medium">
+                  <span>5 מילים</span>
+                  <span>125 מילים</span>
+                  <span>250 מילים</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+              <MenuButton 
+                title="תרגול חופשי" 
+                description="התאמן בלי לחץ ובלי הגבלה" 
+                icon="✍️" 
+                color="bg-green-500" 
+                onClick={() => setGameMode('practice')} 
+              />
+              <MenuButton 
+                title="אתגר זמן" 
+                description="כמה מילים תצליח לכתוב בדקה?" 
+                icon="⏱️" 
+                color="bg-blue-500" 
+                onClick={() => setGameMode('timed')} 
+              />
+              <MenuButton 
+                title="מצב הישרדות" 
+                description="שמור על החיים שלך וכתוב נכון!" 
+                icon="❤️" 
+                color="bg-red-500" 
+                onClick={() => setGameMode('survival')} 
+              />
+              <MenuButton 
+                title="לוח תוצאות" 
+                description="מי הכי טוב במחלקה?" 
+                icon="🏆" 
+                color="bg-yellow-500" 
+                onClick={() => setGameMode('leaderboard')} 
+              />
+            </div>
           </div>
         )}
 
@@ -66,6 +94,7 @@ export default function Home() {
             mode={gameMode as any} 
             onGameOver={handleGameOver} 
             onQuit={() => setGameMode('menu')}
+            wordCount={wordCount}
           />
         )}
 

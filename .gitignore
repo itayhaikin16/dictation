@@ -8,5 +8,5 @@ node_modules
 *.wav
 
 # Ignore the directories containing wav files specifically
-data/dictation_wav/
-public/audio/dictation_wav/
+#data/dictation_wav/
+#public/audio/dictation_wav/

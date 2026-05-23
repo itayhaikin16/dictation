@@ -2,8 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { GameEngine } from '@/components/game/engine';
 import { Leaderboard } from '@/components/game/leaderboard';
-import seedWords from '@/data/seed_words.json';
+import { Word } from '@/types';
+import seedWordsRaw from '@/data/seed_words.json';
 import { getOrCreateProfile, saveScore } from '@/lib/supabase-service';
+
+const seedWords: Word[] = (seedWordsRaw as any[]).map((word, index) => ({
+  ...word,
+  id: word.id || `word-${index}`,
+}));
 
 export default function Home() {
   const [gameMode, setGameMode] = useState<'welcome' | 'menu' | 'practice' | 'timed' | 'survival' | 'leaderboard'>('welcome');
@@ -30,7 +36,7 @@ export default function Home() {
       return;
     }
     
-    setUserId(data?.id);
+    setUserId(data?.id ?? null);
     setGameMode('menu');
   };
 

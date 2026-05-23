@@ -55,7 +55,7 @@ export async function fetchLeaderboard() {
 
   if (error) throw error;
   
-  return data.map(item => ({
+  return data.map((item: any) => ({
     id: item.id,
     score: item.score,
     mode: item.mode,

@@ -5,7 +5,7 @@ node_modules
 .DS_Store
 
 # Ignore all wav files in the project
-*.wav
+#*.wav
 
 # Ignore the directories containing wav files specifically
 #data/dictation_wav/

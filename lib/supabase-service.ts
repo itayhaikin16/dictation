@@ -51,7 +51,7 @@ export async function fetchLeaderboard() {
       )
     `)
     .order('score', { ascending: false })
-    .limit(10);
+    .limit(200);
 
   if (error) throw error;
   
